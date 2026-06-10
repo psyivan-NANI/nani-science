@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理化互動教室：光的折射原理與介面動態模擬器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <span class="app-title">⚡ 光學波前演繹：光的折射與速度模擬器</span>
+                <button id="btn-play-pause" class="btn-action active">暫停光束動態</button>
+            </div>
+            <div class="panel-group slider-group">
+                <label for="slider-angle">調整入射角：<span id="angle-text">45°</span></label>
+                <input type="range" id="slider-angle" min="0" max="80" value="45" step="1">
+            </div>
+            <div class="panel-group toggle-group">
+                <button id="mode-air-water" class="btn-mode active">空氣 → 水 (快到慢)</button>
+                <button id="mode-water-air" class="btn-mode">水 → 空氣 (慢到快)</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="refraction-wrapper">
+                    <canvas id="refractionCanvas"></canvas>
+                    
+                    <div class="sci-label lbl-medium-top" id="lbl-top">空氣 (光速較快)</div>
+                    <div class="sci-label lbl-medium-bottom" id="lbl-bottom">水 (光速較慢)</div>
+                    <div class="sci-label lbl-normal">法線</div>
+                    <div class="sci-label lbl-interface">介面</div>
+                </div>
+            </div>
+
+            <aside class="sidebar-panel">
+                <section class="info-card">
+                    <h2><span class="dot yellow"></span> 當前波前運行狀態</h2>
+                    <p class="current-status" id="status-title">計算中...</p>
+                    <blockquote id="status-desc">
+                        正在載入光學折射介面幾何...
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 國中理化會考核心考點</h2>
+                    <ul>
+                        <li><strong>折射本質：</strong>光在不同介質中**傳播速度不同**。當光斜射入另一介質時，在介面處前進方向發生偏折。</li>
+                        <li><strong>角度定義：</strong>入射角與折射角皆指**「光線與法線（垂直線）的夾角」**，絕非與水平介面的夾角。</li>
+                        <li><strong>終極口訣【快大、慢小】：</strong>光速越快的介質，其角度（與法線夾角）就越大！反之，光速慢的介質角度就小。</li>
+                        <li><strong>不偏折特例：</strong>當入射角為 0°（垂直入射）時，**前進方向不變**，但光的**傳播速度依然會改變**！</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 課堂課後隨堂檢測</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

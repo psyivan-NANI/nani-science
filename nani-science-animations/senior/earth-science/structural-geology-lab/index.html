@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中地球科學互動教室：構造地質學與斷層力學演示</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <span class="app-title">🌍 構造地質學：斷層應力與地層錯動微觀演繹</span>
+                <button id="mode-normal" class="btn active">正斷層 (張力)</button>
+                <button id="mode-reverse" class="btn">逆斷層 (壓力)</button>
+                <button id="mode-strike" class="btn">平移斷層 (剪力)</button>
+            </div>
+            <div class="panel-group">
+                <button id="btn-apply-stress" class="btn-action">⚠️ 施加應力 (累積應變)</button>
+                <button id="btn-erode" class="btn">⏳ 地表風化侵蝕</button>
+                <button id="btn-reset" class="btn">重置地層</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="fault-wrapper">
+                    <div class="stress-indicator left-arrow" id="stress-L"></div>
+                    <div class="stress-indicator right-arrow" id="stress-R"></div>
+
+                    <canvas id="faultCanvas"></canvas>
+
+                    <div class="sci-label lbl-hanging" id="lbl-hanging">上盤 (Hanging Wall)</div>
+                    <div class="sci-label lbl-foot" id="lbl-foot">下盤 (Footwall)</div>
+                    <div class="sci-label lbl-surface" id="lbl-surface">野外地表露頭</div>
+                    <div class="sci-label lbl-fault-line" id="lbl-fault-line">斷層線/面</div>
+                </div>
+            </div>
+
+            <aside class="dashboard-panel">
+                <section class="info-card">
+                    <h2><span class="dot yellow"></span> 地質應力與力學看板</h2>
+                    <div class="status-zone" id="status-zone">地層處於原始水平沉積狀態</div>
+                    <table class="data-table">
+                        <tr>
+                            <th>物理量/構造名稱</th>
+                            <th>學術解析趨勢</th>
+                        </tr>
+                        <tr>
+                            <td>主要受力類型</td>
+                            <td id="td-stress-type" style="color: #38bdf8;">水平張力 (Tensional)</td>
+                        </tr>
+                        <tr>
+                            <td>兩盤相對位移</td>
+                            <td id="td-displacement" style="color: #ef4444;">未發生錯動 (0m)</td>
+                        </tr>
+                        <tr>
+                            <td>岩層能量狀態</td>
+                            <td id="td-energy-state">應變累積中...</td>
+                        </tr>
+                    </table>
+                    <blockquote id="stage-desc">
+                        依據「疊置定律」，在未受地殼變動干擾前，老地層在下、新地層在上。請點擊「施加應力」觀察岩石受力超出剪切強度時的瞬時斷裂。
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 學測與分科測驗黃金考點</h2>
+                    <ul>
+                        <li><strong>上盤與下盤判斷：</strong>將斷層面想像成斜坡，站在斜坡上方的是<strong>上盤</strong>，在 slope 下方的是<strong>下盤</strong>。與左右無關！</li>
+                        <li><strong>正斷層：</strong>受<strong>張力</strong>作用，上盤相對向下移動。常見於板塊張裂發散邊界（如東非大裂谷）。</li>
+                        <li><strong>逆斷層：</strong>受<strong>壓力</strong>作用，上盤相對向上爬升。常見於板塊擠壓聚合邊界（如臺灣島、造山帶）。</li>
+                        <li><strong>平移斷層：</strong>受<strong>剪力</strong>作用，兩盤沿水平方向進行相對位移。大考常考由地表俯視圖判斷左移或右移。</li>
+                        <li><strong>侵蝕面判斷順序：</strong>若地層錯動後被侵蝕面削平，隨後再沉積新地層，此構造稱為<strong>不整合面</strong>，可用於建立地質事件先後順序。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 構造地質學隨堂實戰檢測</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

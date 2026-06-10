@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國中生物互動教室：光合作用全解碼</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <span class="app-title">🍃 光合作用動態實驗室 (國中會考專業版)</span>
+            </div>
+            <div class="panel-group">
+                <label>太陽光強度：</label>
+                <input type="range" id="light-slider" min="0" max="100" value="50">
+                <label>CO₂ 濃度：</label>
+                <input type="range" id="co2-slider" min="0" max="100" value="50">
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper">
+                    <canvas id="photoCanvas"></canvas>
+                    
+                    <div class="bio-label label-light-rxn" style="top: 20%; left: 30%;">光反應 (類囊體)</div>
+                    <div class="bio-label label-dark-rxn" style="top: 20%; left: 70%;">碳反應 (基質)</div>
+                    
+                    <div class="sci-tag" style="top: 85%; left: 15%; color: #38bdf8;">輸入：水 (H₂O)</div>
+                    <div class="sci-tag" style="top: 10%; left: 15%; color: #fbbf24;">輸入：光能</div>
+                    <div class="sci-tag" style="top: 10%; left: 50%; color: #f87171;">輸出：氧氣 (O₂)</div>
+                    <div class="sci-tag" style="top: 85%; left: 50%; color: #94a3b8;">輸入：二氧化碳 (CO₂)</div>
+                    <div class="sci-tag" style="top: 50%; left: 88%; color: #4ade80;">輸出：葡萄糖</div>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 實時生理監測</h2>
+                    <p class="current-status" id="rate-display">光合作用速率：正常</p>
+                    <blockquote id="bio-desc">
+                        光反應正在利用光能將水分解。產生的能量將供應給右側的碳反應。
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot yellow"></span> 會考重點整理</h2>
+                    <ul>
+                        <li><strong>光反應：</strong>發生在葉綠餅，吸收光能將水分解產生<strong>氧氣</strong>並產生能量。</li>
+                        <li><strong>碳反應：</strong>發生在基質，利用光反應提供的能量將<strong>二氧化碳</strong>轉換為葡萄糖與水。</li>
+                        <li><strong>實驗檢驗：</strong>澱粉遇碘液呈<strong>藍黑色</strong>。檢驗前需先在熱水中漂洗，並在酒精中隔水加熱脫去葉綠素。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 隨堂測驗 (會考模擬)</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" onclick="nextQuestion()">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

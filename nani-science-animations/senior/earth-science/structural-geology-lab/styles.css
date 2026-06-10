@@ -1,0 +1,295 @@
+:root {
+    --bg-dark: #080d16;
+    --card-bg: rgba(15, 23, 42, 0.9);
+    --text-glow: #00ffcc;
+    --stress-red: #ef4444;
+    --fault-purple: #a78bfa;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #cbd5e1;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 頂部控制面板 */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1e293b;
+    z-index: 100;
+}
+
+.app-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-glow);
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    margin-right: 15px;
+}
+
+.panel-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 按鈕設計 */
+.btn {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    background: #334155;
+    color: #fff;
+}
+
+.btn.active {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    border-color: #38bdf8;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+.btn-action {
+    background: linear-gradient(135deg, #b91c1c, #991b1b);
+    border: 1px solid #f87171;
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-action:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
+/* 主版面外觀 */
+.main-content {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 54px);
+    overflow: hidden;
+}
+
+.canvas-viewport {
+    flex: 1;
+    position: relative;
+    background: #090e18;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.diagram-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 構造力學箭頭動態疊加 */
+.stress-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 24px;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: all 0.3s;
+    opacity: 0.7;
+}
+
+.left-arrow { left: 30px; }
+.right-arrow { right: 30px; }
+
+/* 科學標籤置頂覆蓋 */
+.sci-label {
+    position: absolute;
+    font-size: 11px;
+    font-weight: bold;
+    pointer-events: none;
+    background: rgba(8, 13, 22, 0.85);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lbl-hanging { color: #38bdf8; }
+.lbl-foot { color: #fbbf24; }
+.lbl-surface { top: 30px; left: 50%; transform: translateX(-50%); color: #10b981; }
+.lbl-fault-line { bottom: 40px; left: 50%; transform: translateX(-50%); color: var(--fault-purple); }
+
+/* 右側控制看板面形 */
+.dashboard-panel {
+    width: 360px;
+    background: #0b111e;
+    border-left: 1px solid #1e2942;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.info-card {
+    background: var(--card-bg);
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.info-card h2 {
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.dot.yellow { background: #eab308; box-shadow: 0 0 6px #eab308; }
+.dot.green { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.dot.blue { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+
+.status-zone {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 11.5px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    border-left: 3px solid #64748b;
+    margin-bottom: 10px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #1e293b;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.data-table th {
+    background: rgba(255, 255, 255, 0.02);
+    color: #94a3b8;
+}
+
+blockquote {
+    font-size: 11px;
+    color: #cbd5e1;
+    border-left: 3px solid var(--text-glow);
+    padding-left: 8px;
+    line-height: 1.5;
+}
+
+.info-card ul {
+    padding-left: 15px;
+    font-size: 11px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.info-card li { margin-bottom: 5px; }
+
+/* 課堂測驗面板 */
+.quiz-card {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(12, 24, 48, 0.7);
+}
+
+.quiz-question {
+    font-size: 12px;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.opt-btn {
+    background: #141b2e;
+    border: 1px solid #2d3954;
+    color: #cbd5e1;
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.opt-btn:hover:not(:disabled) {
+    background: #1e294a;
+    border-color: #475b8c;
+    color: #fff;
+}
+
+.opt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.quiz-feedback {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.quiz-feedback.correct { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
+.quiz-feedback.wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; }
+
+.hidden { display: none !important; }

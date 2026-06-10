@@ -1,0 +1,275 @@
+:root {
+    --bg-dark: #040811;
+    --card-bg: rgba(13, 22, 42, 0.85);
+    --glow-yellow: #ffee55;
+    --space-blue: #00d2ff;
+    --obs-green: #00ffcc;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #cbd5e1;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 頂部控制欄 */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #09101f;
+    padding: 12px 20px;
+    border-bottom: 1px solid #162541;
+    z-index: 100;
+}
+
+.app-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--space-blue);
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #fff;
+}
+
+#slider-date {
+    width: 250px;
+    accent-color: var(--glow-yellow);
+    cursor: pointer;
+}
+
+/* 主畫面排版 */
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.canvas-viewport {
+    flex: 1.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #0a1731 0%, #03070f 100%);
+    padding: 15px;
+    position: relative;
+}
+
+/* 確保不移位的黃金約束比例容器 */
+.diagram-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    aspect-ratio: 1 / 1;
+}
+
+#moonCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 專業科學標籤基礎外觀 */
+.sci-label {
+    position: absolute;
+    background: rgba(4, 8, 17, 0.85);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #e2e8f0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* 左側太空視角標籤定位 */
+.lbl-sun {
+    top: 4%;
+    right: 52%;
+    border-color: #ffaa00;
+    color: #ffbb55;
+}
+
+.lbl-earth {
+    top: 55%;
+    left: 21%;
+    border-color: rgba(37, 99, 235, 0.5);
+    color: #93c5fd;
+}
+
+.lbl-orbit {
+    top: 22%;
+    left: 4%;
+    font-style: italic;
+}
+
+/* 右側主觀視角標籤定位 */
+.lbl-obs-view {
+    top: 4%;
+    left: 52%;
+    border-color: var(--glow-yellow);
+    color: #fffde0;
+}
+
+.lbl-west {
+    bottom: 44%;
+    right: 12%;
+    border-color: var(--obs-green);
+    color: var(--obs-green);
+}
+
+.lbl-east {
+    bottom: 44%;
+    left: 53%;
+    border-color: #ef4444;
+    color: #fca5a5;
+}
+
+/* 右側側邊資訊欄結構 */
+.sidebar-panel {
+    flex: 1;
+    background: #070d1a;
+    border-left: 1px solid #162541;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.info-card {
+    background: var(--card-bg);
+    border: 1px solid #1c3156;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.info-card h2 {
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.yellow { background: var(--glow-yellow); box-shadow: 0 0 6px var(--glow-yellow); }
+.dot.green { background: var(--obs-green); box-shadow: 0 0 6px var(--obs-green); }
+.dot.blue { background: var(--space-blue); box-shadow: 0 0 6px var(--space-blue); }
+
+.current-status {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--glow-yellow);
+    margin-bottom: 6px;
+}
+
+blockquote {
+    font-size: 12px;
+    color: #94a3b8;
+    border-left: 3px solid var(--space-blue);
+    padding-left: 8px;
+    line-height: 1.5;
+}
+
+.info-card ul {
+    padding-left: 15px;
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.info-card li {
+    margin-bottom: 5px;
+}
+
+/* 題庫系統外觀 */
+.quiz-card {
+    border-color: rgba(0, 210, 255, 0.3);
+    background: rgba(6, 15, 33, 0.9);
+}
+
+.quiz-question {
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.opt-btn {
+    background: #0f1b30;
+    border: 1px solid #23395f;
+    color: #cbd5e1;
+    padding: 8px 12px;
+    text-align: left;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.opt-btn:hover:not(:disabled) {
+    background: #1c335a;
+    border-color: var(--space-blue);
+    color: #fff;
+}
+
+.opt-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.quiz-feedback {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.quiz-feedback.correct {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #34d399;
+}
+
+.quiz-feedback.wrong {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #f87171;
+}
