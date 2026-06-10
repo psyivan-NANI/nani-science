@@ -1,0 +1,254 @@
+/* --- 視覺規範：白瓷感現代高階數位教科書風格 --- */
+:root {
+    --bg-main: #f8fafc;
+    --bg-panel: #ffffff;
+    --bg-card: #f1f5f9;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --color-primary: #0284c7;
+    --color-oxygen: #dc2626;
+    --color-deoxygen: #2563eb;
+    --border-ui: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 16px;
+    gap: 16px;
+}
+
+/* 頂部功能導覽列 */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-panel);
+    padding: 14px 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-ui);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand .icon { font-size: 24px; }
+.brand h1 { font-size: 16px; color: var(--text-main); font-weight: 700; }
+.brand p { font-size: 11px; color: var(--text-muted); }
+
+.global-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.ui-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ui-btn:hover { opacity: 0.9; }
+.ui-btn.active { background: #ea580c; }
+
+.mode-select {
+    display: flex;
+    background: var(--bg-card);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border-ui);
+}
+
+.mode-btn {
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.15s;
+}
+
+.mode-btn.active {
+    background: var(--bg-panel);
+    color: var(--color-primary);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-weight: 600;
+}
+
+/* 主內容版面配置 */
+.app-main {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    height: calc(100vh - 170px);
+    overflow: hidden;
+}
+
+/* 左側 Canvas 視窗 */
+.canvas-panel {
+    flex: 1;
+    background: #0f172a; /* 深色背景完美襯托寫實心臟底圖與高亮度流體 */
+    border-radius: var(--radius);
+    border: 1px solid var(--border-ui);
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 醫學標籤：高對比半透明白瓷樣式 */
+.bio-tag {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #94a3b8;
+    color: #0f172a;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%);
+    letter-spacing: 0.5px;
+}
+
+.tag-la { border-left: 4px solid var(--color-oxygen); }
+.tag-lv { border-left: 4px solid var(--color-oxygen); }
+.tag-ao { border-top: 4px solid var(--color-oxygen); }
+.tag-pv { border-right: 4px solid var(--color-oxygen); }
+
+.tag-ra { border-left: 4px solid var(--color-deoxygen); }
+.tag-rv { border-left: 4px solid var(--color-deoxygen); }
+.tag-pa { border-top: 4px solid var(--color-deoxygen); }
+.tag-vc { border-left: 4px solid var(--color-deoxygen); }
+
+/* 右側側邊欄滾動防破版機制 */
+.sidebar-panel {
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.sidebar-panel::-webkit-scrollbar { width: 5px; }
+.sidebar-panel::-webkit-scrollbar-thumb { background: var(--border-ui); border-radius: 10px; }
+
+.card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-ui);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+}
+
+.card h2 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.indicator { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; display: inline-block; }
+.indicator.blink { animation: pulseGlow 2s infinite; }
+.indicator.purple { background: #a855f7; }
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.status-grid { display: flex; gap: 12px; margin-bottom: 12px; }
+.grid-item {
+    flex: 1; background: var(--bg-card); padding: 10px; border-radius: 8px;
+    display: flex; flex-direction: column; gap: 4px;
+}
+.grid-item .lbl { font-size: 11px; color: var(--text-muted); }
+.grid-item .val { font-size: 14px; font-weight: 700; }
+
+.range-group { margin-bottom: 12px; }
+.range-group label { font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 6px; }
+.range-group input[type="range"] { width: 100%; cursor: pointer; }
+
+.desc-text {
+    font-size: 12px; color: #475569; line-height: 1.6;
+    background: var(--bg-card); padding: 10px; border-radius: 8px;
+    border-left: 3px solid var(--color-primary);
+}
+
+/* 題庫結構 */
+.quiz-card { border-top: 4px solid #a855f7; }
+.quiz-question { font-size: 13px; font-weight: 600; line-height: 1.5; margin-bottom: 12px; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+.quiz-opt {
+    width: 100%; padding: 10px 14px; text-align: left;
+    background: var(--bg-card); border: 1px solid var(--border-ui);
+    border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: 0.15s; line-height: 1.4;
+}
+.quiz-opt:hover:not(:disabled) { background: #e2e8f0; border-color: #cbd5e1; }
+.quiz-opt:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.quiz-feedback { margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 11px; line-height: 1.5; }
+.quiz-feedback.correct { background: #dcfce7; border: 1px solid #22c55e; color: #15803d; }
+.quiz-feedback.wrong { background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; }
+
+/* 底部流程步進器 */
+.app-footer-steps { height: 65px; }
+.step-timeline {
+    display: flex; justify-content: space-between; background: var(--bg-panel);
+    padding: 12px 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-ui);
+}
+.step-node { display: flex; align-items: center; gap: 8px; opacity: 0.4; transition: all 0.3s ease; }
+.step-node.active { opacity: 1; transform: translateY(-2px); }
+.step-num {
+    width: 20px; height: 20px; background: var(--text-muted); color: white;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: 700;
+}
+.step-node.active .step-num { background: var(--color-primary); }
+.step-label { font-size: 12px; font-weight: 600; }

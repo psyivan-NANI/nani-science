@@ -1,0 +1,320 @@
+:root {
+    --bg-dark: #070b12;
+    --card-bg: rgba(15, 22, 38, 0.9);
+    --zinc-blue: #38bdf8;
+    --copper-orange: #f97316;
+    --electron-yellow: #eab308;
+    --text-glow: #00ffcc;
+    --beaker-water: rgba(30, 58, 138, 0.25);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #cbd5e1;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 頂部控制欄 */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f1626;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1e2942;
+    z-index: 100;
+}
+
+.app-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-glow);
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    margin-right: 10px;
+}
+
+.panel-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-badge {
+    background: #1e293b;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    border: 1px solid #334155;
+    color: #94a3b8;
+}
+
+/* 按鈕設計 */
+.btn {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    background: #334155;
+    color: #fff;
+}
+
+.btn.active {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    border-color: #38bdf8;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+/* 主版面 */
+.main-content {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 54px);
+    overflow: hidden;
+}
+
+.canvas-viewport {
+    flex: 1;
+    position: relative;
+    background: #090d16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.diagram-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 宏觀儀表板疊加 */
+.macro-dashboard {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.galvanometer {
+    background: #111827;
+    border: 2px solid #374151;
+    border-radius: 8px;
+    padding: 8px 16px;
+    width: 130px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+.meter-label {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.meter-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #4b5563;
+    padding: 0 10px;
+}
+
+.pointer {
+    width: 2px;
+    height: 26px;
+    background: #ef4444;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+}
+
+/* 科學標籤置頂 */
+.sci-label {
+    position: absolute;
+    font-size: 11px;
+    font-weight: bold;
+    pointer-events: none;
+    background: rgba(7, 11, 18, 0.75);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.lbl-anode { top: 110px; left: 14%; color: var(--zinc-blue); }
+.lbl-cathode { top: 110px; right: 14%; color: var(--copper-orange); }
+.lbl-zn-sol { bottom: 35px; left: 13%; color: #7dd3fc; }
+.lbl-cu-sol { bottom: 35px; right: 13%; color: #fdba74; }
+.lbl-bridge { top: 125px; left: 50%; transform: translateX(-50%); color: #a78bfa; }
+
+/* 右側控制面板 */
+.dashboard-panel {
+    width: 350px;
+    background: #0a0f1d;
+    border-left: 1px solid #1e2942;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.info-card {
+    background: var(--card-bg);
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.info-card h2 {
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.dot.yellow { background: #eab308; box-shadow: 0 0 6px #eab308; }
+.dot.green { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.dot.blue { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+
+.status-zone {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    border-left: 3px solid #64748b;
+    margin-bottom: 10px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+
+.data-table th, .data-table td {
+    border: 1px solid #1e293b;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.data-table th {
+    background: rgba(255, 255, 255, 0.02);
+    color: #94a3b8;
+}
+
+blockquote {
+    font-size: 11.5px;
+    color: #cbd5e1;
+    border-left: 3px solid var(--text-glow);
+    padding-left: 8px;
+    line-height: 1.5;
+}
+
+.info-card ul {
+    padding-left: 15px;
+    font-size: 11.5px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.info-card li { margin-bottom: 6px; }
+
+/* 題目模組 */
+.quiz-card {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(12, 24, 48, 0.7);
+}
+
+.quiz-question {
+    font-size: 12px;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.opt-btn {
+    background: #141b2e;
+    border: 1px solid #2d3954;
+    color: #cbd5e1;
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.opt-btn:hover:not(:disabled) {
+    background: #1e294a;
+    border-color: #475b8c;
+    color: #fff;
+}
+
+.opt-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.quiz-feedback {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.quiz-feedback.correct { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
+.quiz-feedback.wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; }
+
+.hidden { display: none !important; }

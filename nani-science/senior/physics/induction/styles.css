@@ -1,0 +1,384 @@
+:root {
+    --bg-dark: #070b12;
+    --card-bg: rgba(13, 23, 42, 0.9);
+    --flux-blue: #38bdf8;
+    --magnet-red: #ef4444;
+    --magnet-blue: #3b82f6;
+    --current-glow: #00ffcc;
+    --text-glow: #00ffcc;
+    --border-color: rgba(56, 189, 248, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: #e2e8f0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 頂部控制面板 */
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1e293b;
+    z-index: 100;
+}
+
+.app-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.btn-toggle {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-toggle:hover {
+    background: #334155;
+    color: #fff;
+}
+
+.btn-toggle.active {
+    background: rgba(14, 165, 233, 0.15);
+    border-color: #38bdf8;
+    color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+/* 主要佈局 */
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 左側動畫實驗畫布區 */
+.canvas-viewport {
+    flex: 1;
+    position: relative;
+    background: radial-gradient(circle at center, #0b1528 0%, #050a14 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.diagram-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 760px;
+    max-height: 480px;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+}
+
+canvas:active {
+    cursor: grabbing;
+}
+
+/* 檢流計 (Galvanometer) 儀表 UI */
+.galvanometer-ui {
+    position: absolute;
+    bottom: 25px;
+    left: 49%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 75px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid #475569;
+    border-radius: 70px 70px 0 0;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* 刻度盤背景弧線 */
+.dial-scale {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    width: 100px;
+    height: 100px;
+    border: 1.5px dashed #64748b;
+    border-radius: 50%;
+}
+
+/* 檢流計指針 */
+.pointer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    height: 52px;
+    background: #ef4444;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 0.05s linear;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+    z-index: 10;
+}
+
+/* 指針中心圓點 */
+.galvanometer-ui::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    background: #475569;
+    border-radius: 50%;
+    z-index: 20;
+}
+
+.dial-label {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: #94a3b8;
+}
+
+/* 科學標籤文本樣式 */
+.sci-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+    font-weight: 500;
+}
+
+.label-coil {
+    color: #c084fc;
+    background: rgba(88, 28, 135, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.label-flux {
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.label-lenz {
+    color: var(--text-glow);
+    background: rgba(0, 255, 204, 0.1);
+    border: 1px solid rgba(0, 255, 204, 0.3);
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.15);
+}
+
+.label-normal {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* 右側側邊欄觀測台 */
+.sidebar {
+    width: 340px;
+    background: #090f1c;
+    border-left: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.info-card h2 {
+    font-size: 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 6px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.yellow { background: #eab308; box-shadow: 0 0 6px #eab308; }
+.dot.green  { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.dot.blue   { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+
+.current-status {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-glow);
+    margin-bottom: 6px;
+}
+
+blockquote {
+    font-size: 12px;
+    color: #cbd5e1;
+    border-left: 3px solid #38bdf8;
+    padding-left: 8px;
+    line-height: 1.6;
+}
+
+.info-card ul {
+    padding-left: 16px;
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.info-card li {
+    margin-bottom: 6px;
+}
+
+/* 題庫結構專屬樣式 */
+.quiz-card {
+    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(10, 25, 47, 0.75);
+}
+
+.quiz-question {
+    font-size: 13px;
+    color: #fff;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opt-btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    padding: 8px 12px;
+    font-size: 12px;
+    text-align: left;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+}
+
+.opt-btn:hover:not(:disabled) {
+    background: #334155;
+    border-color: #475569;
+    color: #fff;
+}
+
+.opt-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 答題反饋區 */
+.quiz-feedback {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.quiz-feedback.correct {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #34d399;
+}
+
+.quiz-feedback.wrong {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid #ef4444;
+    color: #f87171;
+}
+
+/* 通用動作按鈕 */
+.btn {
+    background: #0284c7;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn:hover {
+    background: #0369a1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 側邊欄滾動條美化 */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #090f1c;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang=\"zh-TW\">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地科互動教室：月相變化與潮汐雙視角模擬器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <span class="app-title">🌙 月相變化與潮汐效應雙視角模擬器</span>
+            </div>
+            <div class="panel-group slider-group">
+                <label for="slider-date">農曆日期控制：<span id="date-text">農曆十五 (滿月)</span></label>
+                <input type="range" id="slider-date" min="1" max="30" value="15" step="1">
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="moon-wrapper">
+                    <canvas id="moonCanvas"></canvas>
+
+                    <div class="sci-label space-lbl lbl-sun">☀️ 太陽光平行射入 (右側)</div>
+                    <div class="sci-label space-lbl lbl-earth">地球 (北極俯視)</div>
+                    <div class="sci-label space-lbl lbl-orbit">逆時針公轉軌道</div>
+                    
+                    <div class="sci-label view-lbl lbl-obs-view">🔭 地球表面觀測者主觀視角 (面向南方夜空)</div>
+                    <div class="sci-label view-lbl lbl-west">西 (右側)</div>
+                    <div class="sci-label view-lbl lbl-east">東 (左側)</div>
+                </div>
+            </div>
+
+            <aside class="sidebar-panel">
+                <section class="info-card">
+                    <h2><span class="dot yellow"></span> 當前天體運行狀態</h2>
+                    <p class="current-status" id="status-title">載入中...</p>
+                    <blockquote id="status-desc">
+                        正在計算日地月相對幾何位置...
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 國中地科會考黃金考點</h2>
+                    <ul>
+                        <li><strong>亮面由來：</strong>月球本身不發光，靠反射太陽光。不論公轉至何處，<strong>面向太陽的半球(右半球)永遠是亮的</strong>。</li>
+                        <li><strong>月相判斷口訣：</strong>農曆上半月亮「右邊/西側」（新月→眉月→上弦月→凸月）；下半月亮「左邊/東側」（凸月→下弦月→殘月）。</li>
+                        <li><strong>升沒規律：</strong>月球因地球自轉東升西落。上弦月中午升起、半夜落下；下弦月半夜升起、中午落下。</li>
+                        <li><strong>潮汐引力效應：</strong>初一、十五日地月排成直線，引力疊加形成<strong>大潮</strong>；初七、二二日地月垂直，形成<strong>小潮</strong>。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 課堂隨堂核心能力檢測</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

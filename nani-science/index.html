@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自然科學互動式動態演示平台 - 入口導覽</title>
+    <style>
+        :root {
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            /* 學術科目分色 */
+            --bio-color: #10b981;   /* 生物：森林綠 */
+            --earth-color: #f59e0b; /* 地科：大地金 */
+            --pc-color: #3b82f6;    /* 理化/物理：科技藍 */
+            --chem-color: #8b5cf6;  /* 化學：幻彩紫 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Helvetica Neue", Arial, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* 學段區塊區隔 */
+        .stage-section {
+            margin-bottom: 50px;
+        }
+
+        .stage-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 卡片網格佈局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        /* 互動卡片基礎外觀 */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #cbd5e1;
+        }
+
+        .card-body h3 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .card-body p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* 專業學術標籤 */
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .badge-bio { background-color: #ecfdf5; color: var(--bio-color); }
+        .badge-earth { background-color: #fffbeb; color: var(--earth-color); }
+        .badge-pc { background-color: #eff6ff; color: var(--pc-color); }
+        .badge-chem { background-color: #f5f3ff; color: var(--chem-color); }
+
+        .btn-enter {
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+        }
+
+        .card:hover .btn-enter {
+            color: #0284c7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>自然科學互動式多媒體展示平台</h1>
+            <p>融合宏觀與微觀科學演繹 · 探索互動式微觀物理學、化學與生物動態實驗室</p>
+        </header>
+
+        <section class="stage-section">
+            <div class="stage-title">🎒 國中自然科學單元 (Junior)</div>
+            <div class="grid">
+                
+                <a href="./junior/biology/heart-loop/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-bio">國中生物</span>
+                        <h3>心臟與血液循環模擬 (基礎體循環) ↗</h3>
+                        <p>動態展示心房、心室收縮舒張過程，引導瓣膜開閉與動靜脈血液微觀流向。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/biology/heart-loop2/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-bio">國中生物</span>
+                        <h3>心臟與血液循環模擬 (進階肺循環) ↗</h3>
+                        <p>深入拆解體循環與肺循環之氣體交換動態，追蹤減氧血與充氧血的轉換點。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/biology/meiosis/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-bio">國中生物</span>
+                        <h3>細胞減數分裂動態過程 ↗</h3>
+                        <p>直觀演示同源染色體配對、分離與姊妹染色分體分離的連續步驟，建立配子基因多樣性基礎觀念。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/biology/photosynthesis/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-bio">國中生物</span>
+                        <h3>植物光合作用機制演繹 ↗</h3>
+                        <p>解構光反應與碳反應（暗反應）的動態關聯，可視化水分子分解與能量轉移過程。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/earth-science/moon-phases/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-earth">國中地科</span>
+                        <h3>月相變化與日地月三相對位 ↗</h3>
+                        <p>同步模擬地球視角與宇宙視角，徹底突破月相盈虧、出沒時間與相對位置的空間想像瓶頸。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/physics-chem/optics-lens-lab/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-pc">國中理化</span>
+                        <h3>透鏡成像幾何光學實驗室 ↗</h3>
+                        <p>動態調整光源位置與凸凹透鏡焦距，即時追蹤三條特殊光線並精確推導虛實與倒正成像。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./junior/physics-chem/refraction/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-pc">國中理化</span>
+                        <h3>光折射定則與斯乃爾動態光路 ↗</h3>
+                        <p>拖曳改變光束入射角，動態展現光在不同介質界面間發生的反射、折射與臨界角全反射現象。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+            </div>
+        </section>
+
+        <section class="stage-section">
+            <div class="stage-title">🎓 高中分科科學單元 (Senior)</div>
+            <div class="grid">
+                
+                <a href="./senior/biology/nerve/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-bio">高中生物</span>
+                        <h3>神經元動作電位傳導微觀演繹 ↗</h3>
+                        <p>微觀追蹤軸突膜上鈉離子、鉀離子通道的開閉順序，演繹去極化、再極化與離子泵的動態脈衝。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./senior/chemistry/galvanic-cell/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-chem">高中化學</span>
+                        <h3>鋅銅電池 (Galvanic Cell) 反應發電機 ↗</h3>
+                        <p>精細演繹金屬兩極氧化還原、外導線電子流向，以及鹽橋中陰陽離子移動維持電中性的微觀機制。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./senior/earth-science/global-winds/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-earth">高中地科</span>
+                        <h3>全球大氣三圈環流與行星風系 ↗</h3>
+                        <p>對比地球自轉與否，動態推導科氏力如何將單圈對流切分為哈德里、費雷爾與極地三圈環流。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./senior/earth-science/structural-geology-lab/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-earth">高中地科</span>
+                        <h3>构造地质学力學動態實驗室 ↗</h3>
+                        <p>動態施加擠壓或張力，實時模擬地層受力產生的背斜、向斜褶皺，以及正斷層、逆斷層與平移斷層。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+                <a href="./senior/physics/induction/index.html" class="card" target="_blank" rel="noopener noreferrer">
+                    <div class="card-body">
+                        <span class="badge badge-pc">高中物理</span>
+                        <h3>法拉第電磁感應與冷次定律 ↗</h3>
+                        <p>拖曳條形磁鐵進出封閉螺線管，動態計算磁通量時間變化率、檢流計指針與線圈反抗新磁場的方向。</p>
+                    </div>
+                    <div class="btn-enter">在新分頁開啟實驗室 →</div>
+                </a>
+
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

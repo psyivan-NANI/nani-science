@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國中生物核心：減數分裂與生殖細胞形成動態教室</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <span class="app-title">🧬 國中生物：減數分裂與基因重組模擬器</span>
+                <button id="btn-crossover" class="btn-action">💥 觸發基因重組（互換）</button>
+            </div>
+            <div class="panel-group slider-group">
+                <label for="slider-stage">分裂進度控制：<span id="stage-text">間期（DNA複製）</span></label>
+                <input type="range" id="slider-stage" min="0" max="5" value="0" step="1">
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="meiosis-wrapper">
+                    <canvas id="meiosisCanvas"></canvas>
+                </div>
+            </div>
+
+            <aside class="sidebar-panel">
+                <section class="info-card data-board">
+                    <h2><span class="dot neon"></span> 染色體與 DNA 動態監測</h2>
+                    <div class="data-grid">
+                        <div class="grid-item">
+                            <span class="lbl">染色體套數</span>
+                            <span class="val" id="lbl-chrom-n">2n (成對)</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="lbl">DNA 含量</span>
+                            <span class="val" id="lbl-dna-c">4C</span>
+                        </div>
+                    </div>
+                    <blockquote id="status-desc">
+                        間期（複製期）：細胞正在將內部的遺傳物質（DNA）複製成兩倍，準備進行大分裂！
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 會考黃金考點速記</h2>
+                    <ul>
+                        <li><strong>細胞分裂：</strong>複製 1 次，分裂 1 次。產生 2 個子細胞，染色體**不減半（2n → 2n）**。</li>
+                        <li><strong>減數分裂：</strong>複製 1 次，分裂 2 次。產生 4 個子細胞，染色體**減半（2n → n）**。</li>
+                        <li><strong>對象：</strong>體細胞進行細胞分裂；**產生配子（精子/卵）**時進行減數分裂。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 會考模擬檢測（精選 10 題）</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

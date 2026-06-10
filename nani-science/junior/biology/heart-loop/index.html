@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南一版互動自然教室：心臟結構與血液循環系統</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <button id="btn-play-pause" class="btn active">暫停跳動</button>
+                <div class="slider-container">
+                    <label for="slider-rate">心跳速率（生理狀態）：<span id="rate-text">安靜 (70 bpm)</span></label>
+                    <input type="range" id="slider-rate" min="40" max="150" value="70" step="5">
+                </div>
+            </div>
+            <div class="panel-group">
+                <span class="blood-legend oxy">■ 充氧血 (紅)</span>
+                <span class="blood-legend deoxy">■ 缺氧血 (藍)</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="heart-wrapper">
+                    <canvas id="heartCanvas"></canvas>
+
+                    <div class="sci-label lbl-ra">右心房 (RA)</div>
+                    <div class="sci-label lbl-rv">右心室 (RV)</div>
+                    <div class="sci-label lbl-la">左心房 (LA)</div>
+                    <div class="sci-label lbl-lv">左心室 (LV)</div>
+                    
+                    <div class="sci-label lbl-ao">主動脈 (Aorta)</div>
+                    <div class="sci-label lbl-pa">肺動脈 (PA)</div>
+                    <div class="sci-label lbl-vc">大靜脈 (Vena Cava)</div>
+                    <div class="sci-label lbl-pv">肺靜脈 (PV)</div>
+
+                    <footer class="status-panel">
+                        <div class="status-item">
+                            <span class="label">心房狀態：</span>
+                            <span class="value" id="val-atria">舒張 (充血)</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">心室狀態：</span>
+                            <span class="value" id="val-ventricles">收縮 (射血)</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">主要瓣膜：</span>
+                            <span class="value" id="val-valves">房室瓣關閉 / 半月瓣開啟</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
+            <aside class="sidebar-info">
+                <section class="info-card">
+                    <h2><span class="dot blue"></span> 目前生理學動態說明</h2>
+                    <p class="current-status" id="status-title">正常安靜狀態</p>
+                    <blockquote id="status-desc">
+                        心臟由堅韌的心肌構成。當心室收縮時，心室內壓力升高，逼使<strong>房室瓣關閉</strong>（防止血液倒流回心房，產生第一心音），並推開<strong>半月瓣</strong>，將充氧血打入主動脈供應全身，缺氧血打入肺動脈送往肺部。
+                    </blockquote>
+                </section>
+
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 循環核心考點</h2>
+                    <ul>
+                        <li><strong>體循環路徑：</strong>左心室 → 主動脈 → 全身組織微血管（釋放氧氣、吸收廢物） → 上下大靜脈 → 右心房。</li>
+                        <li><strong>肺循環路徑：</strong>右心室 → 肺動脈 → 肺部微血管（排除二氧化碳、吸收氧氣） → 肺靜脈 → 左心房。</li>
+                        <li><strong>核心口訣：</strong>「房接靜脈，室接動脈」；左心流動充氧血（鮮紅），右心流動缺氧血（暗藍）。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 課堂隨堂檢測（10題精選題庫）</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

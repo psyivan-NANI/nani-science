@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心臟循環生理動態核心模擬器 - 教科書級教材</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="brand">
+                <span class="icon">🧬</span>
+                <div>
+                    <h1>血液循環生理動態模擬系統</h1>
+                    <p>高中生物分科測驗 / 國中自然會考 核心教具</p>
+                </div>
+            </div>
+            <div class="global-controls">
+                <button id="btn-pause" class="ui-btn">暫停動畫</button>
+                <div class="mode-select">
+                    <button id="mode-all" class="mode-btn active">全部循環</button>
+                    <button id="mode-sys" class="mode-btn">體循環</button>
+                    <button id="mode-pul" class="mode-btn">肺循環</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="canvas-panel">
+                <div class="canvas-wrapper">
+                    <canvas id="heartFlowCanvas"></canvas>
+                    
+                    <div class="bio-tag tag-ao">主動脈 ARCH</div>
+                    <div class="bio-tag tag-pa">肺動脈支</div>
+                    <div class="bio-tag tag-la">左心房 LA</div>
+                    <div class="bio-tag tag-lv">左心室 LV</div>
+                    <div class="bio-tag tag-ra">右心房 RA</div>
+                    <div class="bio-tag tag-rv">右心室 RV</div>
+                    <div class="bio-tag tag-vc">大靜脈 SVC</div>
+                    <div class="bio-tag tag-pv">肺靜脈 PV</div>
+                </div>
+            </div>
+
+            <aside class="sidebar-panel">
+                <section class="card status-card">
+                    <h2><span class="indicator blink"></span> 生理狀態動態監測</h2>
+                    <div class="status-grid">
+                        <div class="grid-item">
+                            <span class="lbl">當前心跳</span>
+                            <span class="val" id="lbl-bpm">75 bpm</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="lbl">生理狀態</span>
+                            <span class="val" id="lbl-pulse-type" style="color: #16a34a;">正常安靜</span>
+                        </div>
+                    </div>
+                    <div class="range-group">
+                        <label for="slider-bpm">動態調整心率 (BPM)：</label>
+                        <input type="range" id="slider-bpm" min="40" max="160" value="75" step="5">
+                    </div>
+                    <p class="desc-text" id="txt-desc">
+                        正常安靜狀態：人體心臟由強韌的心肌構成。當心室收縮時，房室瓣會立即關閉以防血液倒流（產生第一心音），此時充氧血從左心室強力泵入主動脈，開啟體循環。
+                    </p>
+                </section>
+
+                <section class="card quiz-card">
+                    <h2><span class="indicator purple"></span> 課堂隨堂檢測（精選 10 題高鑑別度題庫）</h2>
+                    <div id="quiz-wrapper">
+                        <p class="quiz-question" id="quiz-question">載入中...</p>
+                        <div class="quiz-options" id="quiz-options"></div>
+                        <div id="quiz-reply" class="quiz-feedback" style="display: none;"></div>
+                        <button id="btn-next-quiz" class="ui-btn" style="margin-top: 12px; width: 100%; display: none;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="app-footer-steps">
+            <div class="step-timeline">
+                <div class="step-node" data-step="1">
+                    <div class="step-num">1</div>
+                    <div class="step-label">心房收縮 (血液入室)</div>
+                </div>
+                <div class="step-node" data-step="2">
+                    <div class="step-num">2</div>
+                    <div class="step-label">心室收縮 (房室瓣閉)</div>
+                </div>
+                <div class="step-node" data-step="3">
+                    <div class="step-num">3</div>
+                    <div class="step-label">動態射血 (進入動脈)</div>
+                </div>
+                <div class="step-node" data-step="4">
+                    <div class="step-num">4</div>
+                    <div class="step-label">心室舒張 (半月瓣閉)</div>
+                </div>
+                <div class="step-node" data-step="5">
+                    <div class="step-num">5</div>
+                    <div class="step-label">等容舒張 (充血準備)</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
