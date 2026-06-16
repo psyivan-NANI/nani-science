@@ -1,358 +1,93 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>南一版互動自然教室：心臟結構與血液循環系統</title>
-<style>
-:root {
-  --oxy:#e53e3e; --deoxy:#3b82f6;
-  --valve-open:#00e5a0; --valve-closed:#ff4d6d;
-  --bg:#0a0f1e; --panel:#111827; --panel2:#0f172a;
-  --border:#1f2d45; --border2:#263347;
-  --text:#f1f5f9; --muted:#94a3b8; --accent:#38bdf8;
-  --green:#10b981; --yellow:#f59e0b; --purple:#8b5cf6;
-  --bio:#1d9e75;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
-.app{display:grid;grid-template-rows:auto auto 1fr auto;height:100vh;overflow:hidden}
-
-/* ── Header ── */
-.app-header{background:var(--panel);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.app-header h1{font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px}
-.app-header h1 .tag{font-size:11px;background:rgba(29,158,117,.18);color:var(--bio);border:1px solid rgba(29,158,117,.3);border-radius:4px;padding:2px 7px;font-weight:500}
-.mode-toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:7px;overflow:hidden}
-.mode-btn{padding:5px 13px;font-size:12px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
-.mode-btn.active{background:var(--accent);color:#0a0f1e;font-weight:600}
-
-/* ── Controls ── */
-.controls{background:var(--panel2);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn.primary{background:var(--accent);color:#0a0f1e;border-color:var(--accent);font-weight:600}
-.btn.primary:hover{opacity:.85}
-.speed-wrap{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
-.speed-wrap input{width:80px;accent-color:var(--accent)}
-.focus-wrap{display:flex;gap:6px;margin-left:auto}
-.fbtn{padding:4px 11px;border-radius:5px;border:1px solid var(--border);background:transparent;font-size:11px;cursor:pointer;transition:all .15s;color:var(--muted)}
-.fbtn[data-f="sys"]{color:var(--oxy);border-color:rgba(229,62,62,.4)}
-.fbtn[data-f="pul"]{color:var(--deoxy);border-color:rgba(59,130,246,.4)}
-.fbtn.active[data-f="all"]{background:#1e293b;color:var(--text)}
-.fbtn.active[data-f="sys"]{background:rgba(229,62,62,.12);color:var(--oxy)}
-.fbtn.active[data-f="pul"]{background:rgba(59,130,246,.12);color:var(--deoxy)}
-
-/* ── Main 3-column ── */
-.main{display:grid;grid-template-columns:220px 1fr 320px;overflow:hidden}
-
-/* ── Left Panel ── */
-.left-panel{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
-.info-block{padding:13px 14px;border-bottom:1px solid var(--border)}
-.info-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.dot-icon{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.dot-blue{background:var(--accent)}
-.dot-green{background:var(--green)}
-.dot-yellow{background:var(--yellow)}
-
-/* 即時監測 */
-.vital-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:12px}
-.vital-label{color:var(--muted)}
-.vital-value{font-weight:600;font-variant-numeric:tabular-nums}
-.vred{color:var(--oxy)}.vblue{color:var(--deoxy)}.vacc{color:var(--accent)}
-.valve-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px}
-.valve-card{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center}
-.valve-card .vn{font-size:10px;color:var(--muted);line-height:1.3;margin-bottom:5px}
-.valve-card .vs{font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px}
-.vdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.vdot.open{background:var(--valve-open);box-shadow:0 0 5px var(--valve-open)}
-.vdot.closed{background:var(--valve-closed)}
-
-/* 知識卡 */
-.concept-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 11px;margin-bottom:8px;font-size:12px;color:var(--muted);line-height:1.6}
-.concept-card strong{color:var(--text);font-weight:500}
-.path-step{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;font-size:12px}
-.step-idx{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.idx-sys{background:rgba(229,62,62,.18);color:var(--oxy)}
-.idx-pul{background:rgba(59,130,246,.18);color:var(--deoxy)}
-.path-step .pt{color:var(--muted)}
-.path-step .pt b{color:var(--text);font-weight:500}
-
-/* ── Canvas ── */
-.canvas-area{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
-#heartCanvas{display:block;max-width:100%;max-height:100%}
-
-/* 步驟提示浮層 */
-.step-overlay{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.93);border:1px solid var(--accent);border-radius:10px;padding:11px 18px;font-size:13px;text-align:center;min-width:300px;max-width:460px;line-height:1.6;backdrop-filter:blur(4px);transition:opacity .35s;z-index:10}
-.step-overlay strong{color:var(--accent)}
-.step-overlay.hidden{opacity:0;pointer-events:none}
-
-/* ── Right Panel ── */
-.right-panel{background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
-.rp-block{padding:13px 14px;border-bottom:1px solid var(--border)}
-.rp-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-
-/* 當前狀態說明 */
-.status-title{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:7px}
-.status-desc{font-size:12px;color:var(--muted);line-height:1.7}
-.status-desc strong{color:var(--text);font-weight:500}
-
-/* 考點提示 */
-.exam-tip{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:8px}
-.exam-tip strong{color:var(--yellow);display:block;margin-bottom:3px}
-
-/* ── Quiz ── */
-.quiz-block{padding:13px 14px;flex:1}
-.quiz-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.quiz-progress{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:0}
-.quiz-q{font-size:12px;color:var(--text);line-height:1.65;margin-bottom:11px;padding:10px 11px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
-.quiz-opts{display:flex;flex-direction:column;gap:6px}
-.opt-btn{text-align:left;padding:8px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;line-height:1.5;font-family:inherit}
-.opt-btn:hover:not(:disabled){border-color:var(--accent);color:var(--text);background:rgba(56,189,248,.06)}
-.opt-btn.correct{border-color:var(--green);background:rgba(16,185,129,.12);color:var(--green)}
-.opt-btn.wrong{border-color:var(--oxy);background:rgba(229,62,62,.1);color:var(--oxy)}
-.opt-btn:disabled{cursor:default}
-.quiz-feedback{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.65;display:none}
-.quiz-feedback.correct{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--muted)}
-.quiz-feedback.correct strong{color:var(--green)}
-.quiz-feedback.wrong{background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.25);color:var(--muted)}
-.quiz-feedback.wrong strong{color:var(--oxy)}
-.btn-next{margin-top:10px;width:100%;display:none}
-
-/* ── Legend + ECG Footer ── */
-.footer{background:var(--panel2);border-top:1px solid var(--border);padding:7px 16px;display:flex;flex-direction:column;gap:5px}
-.legend-row{display:flex;align-items:center;gap:14px;font-size:11px;flex-wrap:wrap}
-.legend-item{display:flex;align-items:center;gap:5px;color:var(--muted)}
-.ldot{width:9px;height:9px;border-radius:50%}
-.ecg-wrap{display:flex;align-items:center;gap:10px}
-.ecg-lbl{font-size:10px;color:var(--muted);white-space:nowrap}
-#ecgCanvas{flex:1;height:44px;display:block}
-
-@media(max-width:900px){
-  .main{grid-template-columns:1fr;grid-template-rows:auto 380px auto}
-  .left-panel{grid-row:3;border-right:none;border-top:1px solid var(--border)}
-  .right-panel{grid-row:1;border-left:none;border-bottom:1px solid var(--border)}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南一版互動自然教室：心臟結構與血液循環系統</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-<div class="app">
+    <div class="app-container">
+        <header class="control-panel">
+            <div class="panel-group">
+                <button id="btn-play-pause" class="btn active">暫停跳動</button>
+                <div class="slider-container">
+                    <label for="slider-rate">心跳速率（生理狀態）：<span id="rate-text">安靜 (70 bpm)</span></label>
+                    <input type="range" id="slider-rate" min="40" max="150" value="70" step="5">
+                </div>
+            </div>
+            <div class="panel-group">
+                <span class="blood-legend oxy">■ 充氧血 (紅)</span>
+                <span class="blood-legend deoxy">■ 缺氧血 (藍)</span>
+            </div>
+        </header>
 
-<!-- Header -->
-<header class="app-header">
-  <h1>🫀 心臟結構與血液循環系統 <span class="tag">國中生物</span></h1>
-  <div class="mode-toggle">
-    <button class="mode-btn active" id="modeTeach">📽 教師講解</button>
-    <button class="mode-btn" id="modeSelf">📖 自學探索</button>
-  </div>
-</header>
+        <main class="main-content">
+            <div class="canvas-viewport">
+                <div class="diagram-wrapper" id="heart-wrapper">
+                    <canvas id="heartCanvas"></canvas>
 
-<!-- Controls -->
-<div class="controls">
-  <button class="btn primary" id="btnPlay">⏸ 暫停</button>
-  <button class="btn" id="btnStep">→ 跳至下一教學點</button>
-  <button class="btn" id="btnReset">↺ 重置</button>
-  <div class="speed-wrap">
-    <span>速率</span>
-    <input type="range" id="speedSlider" min="0.2" max="2.5" step="0.1" value="1.0">
-    <span id="speedVal">1.0×</span>
-  </div>
-  <div class="focus-wrap">
-    <button class="fbtn active" data-f="all">全程</button>
-    <button class="fbtn" data-f="sys">體循環</button>
-    <button class="fbtn" data-f="pul">肺循環</button>
-  </div>
-</div>
+                    <div class="sci-label lbl-ra">右心房 (RA)</div>
+                    <div class="sci-label lbl-rv">右心室 (RV)</div>
+                    <div class="sci-label lbl-la">左心房 (LA)</div>
+                    <div class="sci-label lbl-lv">左心室 (LV)</div>
+                    
+                    <div class="sci-label lbl-ao">主動脈 (Aorta)</div>
+                    <div class="sci-label lbl-pa">肺動脈 (PA)</div>
+                    <div class="sci-label lbl-vc">大靜脈 (Vena Cava)</div>
+                    <div class="sci-label lbl-pv">肺靜脈 (PV)</div>
 
-<!-- Main -->
-<div class="main">
+                    <footer class="status-panel">
+                        <div class="status-item">
+                            <span class="label">心房狀態：</span>
+                            <span class="value" id="val-atria">舒張 (充血)</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">心室狀態：</span>
+                            <span class="value" id="val-ventricles">收縮 (射血)</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">主要瓣膜：</span>
+                            <span class="value" id="val-valves">房室瓣關閉 / 半月瓣開啟</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>
 
-  <!-- Left: 生理監測 + 知識說明 -->
-  <div class="left-panel">
+            <aside class="sidebar-info">
+                <section class="info-card">
+                    <h2><span class="dot blue"></span> 目前生理學動態說明</h2>
+                    <p class="current-status" id="status-title">正常安靜狀態</p>
+                    <blockquote id="status-desc">
+                        心臟由堅韌的心肌構成。當心室收縮時，心室內壓力升高，逼使<strong>房室瓣關閉</strong>（防止血液倒流回心房，產生第一心音），並推開<strong>半月瓣</strong>，將充氧血打入主動脈供應全身，缺氧血打入肺動脈送往肺部。
+                    </blockquote>
+                </section>
 
-    <div class="info-block">
-      <h2><span class="dot-icon dot-blue"></span> 即時生理監測</h2>
-      <div class="vital-row"><span class="vital-label">心搏週期</span><span class="vital-value vacc" id="cyclePhase">心室收縮期</span></div>
-      <div class="vital-row"><span class="vital-label">心室壓力</span><span class="vital-value vred" id="ventP">120 mmHg</span></div>
-      <div class="vital-row"><span class="vital-label">心房壓力</span><span class="vital-value vblue" id="atrP">8 mmHg</span></div>
-      <div class="valve-grid">
-        <div class="valve-card">
-          <div class="vn">房室瓣<br>(僧帽瓣/三尖瓣)</div>
-          <div class="vs" id="avValve"><span class="vdot closed"></span> 關閉</div>
-        </div>
-        <div class="valve-card">
-          <div class="vn">半月瓣<br>(主/肺動脈瓣)</div>
-          <div class="vs" id="slValve"><span class="vdot open"></span> 開啟</div>
-        </div>
-      </div>
+                <section class="info-card">
+                    <h2><span class="dot green"></span> 循環核心考點</h2>
+                    <ul>
+                        <li><strong>體循環路徑：</strong>左心室 → 主動脈 → 全身組織微血管（釋放氧氣、吸收廢物） → 上下大靜脈 → 右心房。</li>
+                        <li><strong>肺循環路徑：</strong>右心室 → 肺動脈 → 肺部微血管（排除二氧化碳、吸收氧氣） → 肺靜脈 → 左心房。</li>
+                        <li><strong>核心口訣：</strong>「房接靜脈，室接動脈」；左心流動充氧血（鮮紅），右心流動缺氧血（暗藍）。</li>
+                    </ul>
+                </section>
+
+                <section class="info-card quiz-card">
+                    <h2><span class="dot blue"></span> 課堂隨堂檢測（10題精選題庫）</h2>
+                    <div id="quiz-container">
+                        <div class="quiz-question" id="quiz-q">載入中...</div>
+                        <div class="quiz-options" id="quiz-opts"></div>
+                        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                        <button id="btn-next-quiz" class="btn hidden" style="margin-top:12px; width:100%;">下一題</button>
+                    </div>
+                </section>
+            </aside>
+        </main>
     </div>
 
-    <div class="info-block">
-      <h2><span class="dot-icon dot-green"></span> 循環路徑</h2>
-      <div style="font-size:11px;color:var(--oxy);font-weight:600;margin-bottom:6px">體循環（充氧血）</div>
-      <div class="path-step"><div class="step-idx idx-sys">1</div><div class="pt"><b>左心室</b> 強力射血</div></div>
-      <div class="path-step"><div class="step-idx idx-sys">2</div><div class="pt">→ <b>主動脈</b> → 全身動脈</div></div>
-      <div class="path-step"><div class="step-idx idx-sys">3</div><div class="pt">→ 微血管 <b>釋放O₂ 吸收CO₂</b></div></div>
-      <div class="path-step"><div class="step-idx idx-sys">4</div><div class="pt">→ <b>大靜脈</b> → 右心房</div></div>
-      <div style="font-size:11px;color:var(--deoxy);font-weight:600;margin:10px 0 6px">肺循環（缺氧血→充氧血）</div>
-      <div class="path-step"><div class="step-idx idx-pul">1</div><div class="pt"><b>右心室</b> 收縮射血</div></div>
-      <div class="path-step"><div class="step-idx idx-pul">2</div><div class="pt">→ <b>肺動脈</b>（缺氧血）</div></div>
-      <div class="path-step"><div class="step-idx idx-pul">3</div><div class="pt">→ 肺泡微血管 <b>排CO₂ 吸O₂</b></div></div>
-      <div class="path-step"><div class="step-idx idx-pul">4</div><div class="pt">→ <b>肺靜脈</b>（充氧血）→ 左心房</div></div>
-    </div>
-
-    <div class="info-block">
-      <h2><span class="dot-icon dot-yellow"></span> 核心考點</h2>
-      <div class="concept-card">
-        <strong>口訣：「房接靜脈，室接動脈」</strong><br>
-        左心房←肺靜脈；左心室→主動脈<br>
-        右心房←大靜脈；右心室→肺動脈
-      </div>
-      <div class="concept-card">
-        <strong>特別注意（易錯）</strong><br>
-        肺動脈流的是<strong style="color:var(--deoxy)">缺氧血</strong>；<br>
-        肺靜脈流的是<strong style="color:var(--oxy)">充氧血</strong><br>
-        ⚠️ 與血管名稱相反！
-      </div>
-      <div class="concept-card">
-        <strong>心音成因</strong><br>
-        第一心音「咚」→ <strong>房室瓣</strong>關閉<br>
-        第二心音「噠」→ <strong>半月瓣</strong>關閉
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Canvas -->
-  <div class="canvas-area">
-    <canvas id="heartCanvas"></canvas>
-    <div class="step-overlay hidden" id="stepOverlay"></div>
-  </div>
-
-  <!-- Right: 狀態說明 + 考點 + 題庫 -->
-  <div class="right-panel">
-
-    <div class="rp-block">
-      <h2><span class="dot-icon dot-blue"></span> 目前生理動態說明</h2>
-      <div class="status-title" id="statusTitle">心室收縮期（射血期）</div>
-      <div class="status-desc" id="statusDesc">
-        心室強力收縮，室內壓力飆升，<strong>房室瓣</strong>因壓力差瞬間關閉（防止血液倒流，產生第一心音）。同時<strong>半月瓣</strong>被推開，充氧血從左心室衝入主動脈，缺氧血從右心室衝入肺動脈。
-      </div>
-    </div>
-
-    <div class="rp-block">
-      <h2><span class="dot-icon" style="background:var(--yellow)"></span> 大考必考提示</h2>
-      <div class="exam-tip">
-        <strong>📌 本階段考點</strong>
-        <span id="examTip">房室瓣關閉時→產生第一心音；半月瓣關閉時→產生第二心音。兩者都是「關閉」時發聲，不是開啟。</span>
-      </div>
-    </div>
-
-    <div class="quiz-block">
-      <h2>
-        <span style="display:flex;align-items:center;gap:6px"><span class="dot-icon dot-blue"></span> 隨堂測驗</span>
-        <span class="quiz-progress" id="quizProgress">1 / 10</span>
-      </h2>
-      <div class="quiz-q" id="quiz-q">載入中...</div>
-      <div class="quiz-opts" id="quiz-opts"></div>
-      <div id="quiz-feedback" class="quiz-feedback"></div>
-      <button id="btn-next-quiz" class="btn btn-next">下一題 →</button>
-    </div>
-
-  </div>
-</div><!-- /main -->
-
-<!-- Footer: Legend + ECG -->
-<div class="footer">
-  <div class="legend-row">
-    <span style="font-size:11px;color:var(--muted);margin-right:2px">圖例：</span>
-    <div class="legend-item"><div class="ldot" style="background:var(--oxy)"></div>充氧血（動脈血）</div>
-    <div class="legend-item"><div class="ldot" style="background:var(--deoxy)"></div>缺氧血（靜脈血）</div>
-    <div class="legend-item"><div class="ldot" style="background:var(--valve-open);box-shadow:0 0 4px var(--valve-open)"></div>瓣膜開啟</div>
-    <div class="legend-item"><div class="ldot" style="background:var(--valve-closed)"></div>瓣膜關閉</div>
-  </div>
-  <div class="ecg-wrap">
-    <span class="ecg-lbl">ECG 心電圖同步：</span>
-    <canvas id="ecgCanvas"></canvas>
-  </div>
-</div>
-
-<script src="script.js"></script>
-<script>
-(function(){
-  var overlay = document.getElementById('teach-overlay');
-
-  document.getElementById('tb-play').onclick = function(){
-    var btn = this;
-    if(typeof window.isPlaying !== 'undefined'){
-      window.isPlaying = !window.isPlaying;
-      btn.textContent = window.isPlaying ? '⏸ 暫停' : '▶ 播放';
-      btn.className   = window.isPlaying ? 'tb-btn on' : 'tb-btn';
-    }
-    if(typeof window.state !== 'undefined' && window.state.isPaused !== undefined){
-      window.state.isPaused = !window.state.isPaused;
-      btn.textContent = window.state.isPaused ? '▶ 播放' : '⏸ 暫停';
-      btn.className   = window.state.isPaused ? 'tb-btn' : 'tb-btn on';
-    }
-    var orig = document.querySelector('#btn-pause, #btn-play-pause, #btnPlay');
-    if(orig && !orig.closest('.teach-bar')) orig.click();
-  };
-
-  document.getElementById('tb-speed').oninput = function(){
-    var v = parseFloat(this.value);
-    document.getElementById('tb-speedval').textContent = v.toFixed(1)+'×';
-    if(typeof window.speed !== 'undefined') window.speed = v;
-    if(typeof window.state !== 'undefined' && window.state.speed !== undefined) window.state.speed = v;
-    if(typeof window.heartRateBpm !== 'undefined') window.heartRateBpm = Math.round(40+v*30);
-  };
-
-  document.getElementById('tb-reset').onclick = function(){
-    if(typeof window.phase !== 'undefined') window.phase = 0;
-    if(typeof window.shownSteps !== 'undefined' && window.shownSteps.clear) window.shownSteps.clear();
-    if(overlay) overlay.classList.add('hidden');
-    var orig = document.querySelector('#btn-reset, #btnReset');
-    if(orig && !orig.closest('.teach-bar')) orig.click();
-  };
-
-  document.getElementById('tb-step').onclick = function(){
-    if(typeof window.TEACH_STEPS !== 'undefined' && typeof window.phase !== 'undefined'){
-      var next = window.TEACH_STEPS.find(function(s){ return s.p > window.phase+0.008; });
-      if(next) window.phase = next.p - 0.004;
-      else { window.phase = 0; if(window.shownSteps && window.shownSteps.clear) window.shownSteps.clear(); }
-    }
-    if(typeof window.isPlaying !== 'undefined') window.isPlaying = true;
-    var pb = document.getElementById('tb-play');
-    pb.textContent = '⏸ 暫停'; pb.className = 'tb-btn on';
-  };
-
-  document.getElementById('tm-teach').onclick = function(){
-    if(typeof window.teachMode !== 'undefined') window.teachMode = true;
-    if(typeof window.shownSteps !== 'undefined' && window.shownSteps.clear) window.shownSteps.clear();
-    this.classList.add('active');
-    document.getElementById('tm-self').classList.remove('active');
-  };
-  document.getElementById('tm-self').onclick = function(){
-    if(typeof window.teachMode !== 'undefined') window.teachMode = false;
-    this.classList.add('active');
-    document.getElementById('tm-teach').classList.remove('active');
-    if(overlay) overlay.classList.add('hidden');
-  };
-
-  // heart-loop 系列有自己的題庫，不需要框架題庫
-  setTimeout(function(){
-    var uqBlock = document.getElementById('upgrade-quiz-block');
-    if(uqBlock) uqBlock.style.display = 'none';
-  }, 100);
-})();
-</script>
-<script>
-(function(){
-  // heart-loop 系列完全自管，無需框架橋接
-  // 只確保 upgrade-quiz-block 隱藏（如果存在）
-  setTimeout(function(){
-    var uqBlock = document.getElementById('upgrade-quiz-block');
-    if(uqBlock) uqBlock.style.display = 'none';
-  }, 100);
-})();
-</script>
+    <script src="script.js"></script>
 </body>
+
 </html>
