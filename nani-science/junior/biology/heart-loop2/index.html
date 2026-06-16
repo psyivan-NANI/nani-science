@@ -1,110 +1,172 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心臟循環生理動態核心模擬器 - 教科書級教材</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心臟循環生理動態模擬（進階肺循環）｜南一自然科學</title>
+<style>
+:root{--oxy:#e53e3e;--deoxy:#3b82f6;--valve-open:#00e5a0;--valve-closed:#ff4d6d;--bg:#0a0f1e;--panel:#111827;--panel2:#0f172a;--border:#1f2d45;--text:#f1f5f9;--muted:#94a3b8;--accent:#38bdf8;--green:#10b981;--yellow:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.app{display:grid;grid-template-rows:auto auto 1fr auto;height:100vh;overflow:hidden}
+.app-header{background:var(--panel);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.app-header h1{font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px}
+.tag{font-size:11px;background:rgba(29,158,117,.18);color:#1d9e75;border:1px solid rgba(29,158,117,.3);border-radius:4px;padding:2px 7px;font-weight:500}
+.mode-toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.mode-btn{padding:5px 13px;font-size:12px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+.mode-btn.active{background:var(--accent);color:#0a0f1e;font-weight:600}
+.controls{background:var(--panel2);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#0a0f1e;border-color:var(--accent);font-weight:600}
+.speed-wrap{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.speed-wrap input{width:80px;accent-color:var(--accent)}
+.focus-wrap{display:flex;gap:6px;margin-left:auto}
+.fbtn{padding:4px 11px;border-radius:5px;border:1px solid var(--border);background:transparent;font-size:11px;cursor:pointer;transition:all .15s;color:var(--muted)}
+.fbtn[data-f="sys"]{color:var(--oxy);border-color:rgba(229,62,62,.4)}
+.fbtn[data-f="pul"]{color:var(--deoxy);border-color:rgba(59,130,246,.4)}
+.fbtn.active[data-f="all"]{background:#1e293b;color:var(--text)}
+.fbtn.active[data-f="sys"]{background:rgba(229,62,62,.12);color:var(--oxy)}
+.fbtn.active[data-f="pul"]{background:rgba(59,130,246,.12);color:var(--deoxy)}
+.main{display:grid;grid-template-columns:220px 1fr 320px;overflow:hidden}
+.left-panel{background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.info-block{padding:13px 14px;border-bottom:1px solid var(--border)}
+.info-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.dot-icon{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vital-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:12px}
+.vital-label{color:var(--muted)}
+.vital-value{font-weight:600;font-variant-numeric:tabular-nums}
+.vred{color:var(--oxy)}.vblue{color:var(--deoxy)}.vacc{color:var(--accent)}
+.step-timeline{display:flex;flex-direction:column;gap:6px;padding:0 2px}
+.step-node{display:flex;align-items:flex-start;gap:8px;padding:8px 9px;border-radius:7px;border:1px solid var(--border);background:var(--bg);font-size:11px;transition:all .2s;cursor:default}
+.step-node.active{border-color:var(--accent);background:rgba(56,189,248,.07)}
+.step-num{width:18px;height:18px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.step-node.active .step-num{background:var(--accent);color:#0a0f1e}
+.step-label{color:var(--muted);line-height:1.4}
+.step-node.active .step-label{color:var(--text)}
+.concept-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 11px;margin-bottom:8px;font-size:12px;color:var(--muted);line-height:1.6}
+.concept-card strong{color:var(--text);font-weight:500}
+.canvas-area{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg)}
+#heartFlowCanvas{display:block;max-width:100%;max-height:100%}
+.step-overlay{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.93);border:1px solid var(--accent);border-radius:10px;padding:11px 18px;font-size:13px;text-align:center;min-width:300px;max-width:460px;line-height:1.6;backdrop-filter:blur(4px);transition:opacity .35s;z-index:10}
+.step-overlay strong{color:var(--accent)}
+.step-overlay.hidden{opacity:0;pointer-events:none}
+.right-panel{background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.rp-block{padding:13px 14px;border-bottom:1px solid var(--border)}
+.rp-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.status-title{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:7px}
+.status-desc{font-size:12px;color:var(--muted);line-height:1.7}
+.status-desc strong{color:var(--text);font-weight:500}
+.exam-tip{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:8px}
+.exam-tip strong{color:var(--yellow);display:block;margin-bottom:3px}
+.quiz-block{padding:13px 14px;flex:1}
+.quiz-block h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.quiz-progress{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:0}
+.quiz-q{font-size:12px;color:var(--text);line-height:1.65;margin-bottom:11px;padding:10px 11px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+.quiz-opts{display:flex;flex-direction:column;gap:6px}
+.opt-btn{text-align:left;padding:8px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;line-height:1.5;font-family:inherit}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);color:var(--text);background:rgba(56,189,248,.06)}
+.opt-btn.correct{border-color:var(--green);background:rgba(16,185,129,.12);color:var(--green)}
+.opt-btn.wrong{border-color:var(--oxy);background:rgba(229,62,62,.1);color:var(--oxy)}
+.opt-btn:disabled{cursor:default}
+.quiz-feedback{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.65;display:none}
+.quiz-feedback.correct{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--muted)}
+.quiz-feedback.correct strong{color:var(--green)}
+.quiz-feedback.wrong{background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.25);color:var(--muted)}
+.quiz-feedback.wrong strong{color:var(--oxy)}
+.btn-next{margin-top:10px;width:100%;display:none}
+.footer{background:var(--panel2);border-top:1px solid var(--border);padding:7px 16px;display:flex;flex-direction:column;gap:5px}
+.legend-row{display:flex;align-items:center;gap:14px;font-size:11px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;color:var(--muted)}
+.ldot{width:9px;height:9px;border-radius:50%}
+.ecg-wrap{display:flex;align-items:center;gap:10px}
+.ecg-lbl{font-size:10px;color:var(--muted);white-space:nowrap}
+#ecgCanvas{flex:1;height:44px;display:block}
+</style>
 </head>
-
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="brand">
-                <span class="icon">🧬</span>
-                <div>
-                    <h1>血液循環生理動態模擬系統</h1>
-                    <p>高中生物分科測驗 / 國中自然會考 核心教具</p>
-                </div>
-            </div>
-            <div class="global-controls">
-                <button id="btn-pause" class="ui-btn">暫停動畫</button>
-                <div class="mode-select">
-                    <button id="mode-all" class="mode-btn active">全部循環</button>
-                    <button id="mode-sys" class="mode-btn">體循環</button>
-                    <button id="mode-pul" class="mode-btn">肺循環</button>
-                </div>
-            </div>
-        </header>
-
-        <main class="app-main">
-            <div class="canvas-panel">
-                <div class="canvas-wrapper">
-                    <canvas id="heartFlowCanvas"></canvas>
-                    
-                    <div class="bio-tag tag-ao">主動脈 ARCH</div>
-                    <div class="bio-tag tag-pa">肺動脈支</div>
-                    <div class="bio-tag tag-la">左心房 LA</div>
-                    <div class="bio-tag tag-lv">左心室 LV</div>
-                    <div class="bio-tag tag-ra">右心房 RA</div>
-                    <div class="bio-tag tag-rv">右心室 RV</div>
-                    <div class="bio-tag tag-vc">大靜脈 SVC</div>
-                    <div class="bio-tag tag-pv">肺靜脈 PV</div>
-                </div>
-            </div>
-
-            <aside class="sidebar-panel">
-                <section class="card status-card">
-                    <h2><span class="indicator blink"></span> 生理狀態動態監測</h2>
-                    <div class="status-grid">
-                        <div class="grid-item">
-                            <span class="lbl">當前心跳</span>
-                            <span class="val" id="lbl-bpm">75 bpm</span>
-                        </div>
-                        <div class="grid-item">
-                            <span class="lbl">生理狀態</span>
-                            <span class="val" id="lbl-pulse-type" style="color: #16a34a;">正常安靜</span>
-                        </div>
-                    </div>
-                    <div class="range-group">
-                        <label for="slider-bpm">動態調整心率 (BPM)：</label>
-                        <input type="range" id="slider-bpm" min="40" max="160" value="75" step="5">
-                    </div>
-                    <p class="desc-text" id="txt-desc">
-                        正常安靜狀態：人體心臟由強韌的心肌構成。當心室收縮時，房室瓣會立即關閉以防血液倒流（產生第一心音），此時充氧血從左心室強力泵入主動脈，開啟體循環。
-                    </p>
-                </section>
-
-                <section class="card quiz-card">
-                    <h2><span class="indicator purple"></span> 課堂隨堂檢測（精選 10 題高鑑別度題庫）</h2>
-                    <div id="quiz-wrapper">
-                        <p class="quiz-question" id="quiz-question">載入中...</p>
-                        <div class="quiz-options" id="quiz-options"></div>
-                        <div id="quiz-reply" class="quiz-feedback" style="display: none;"></div>
-                        <button id="btn-next-quiz" class="ui-btn" style="margin-top: 12px; width: 100%; display: none;">下一題</button>
-                    </div>
-                </section>
-            </aside>
-        </main>
-
-        <footer class="app-footer-steps">
-            <div class="step-timeline">
-                <div class="step-node" data-step="1">
-                    <div class="step-num">1</div>
-                    <div class="step-label">心房收縮 (血液入室)</div>
-                </div>
-                <div class="step-node" data-step="2">
-                    <div class="step-num">2</div>
-                    <div class="step-label">心室收縮 (房室瓣閉)</div>
-                </div>
-                <div class="step-node" data-step="3">
-                    <div class="step-num">3</div>
-                    <div class="step-label">動態射血 (進入動脈)</div>
-                </div>
-                <div class="step-node" data-step="4">
-                    <div class="step-num">4</div>
-                    <div class="step-label">心室舒張 (半月瓣閉)</div>
-                </div>
-                <div class="step-node" data-step="5">
-                    <div class="step-num">5</div>
-                    <div class="step-label">等容舒張 (充血準備)</div>
-                </div>
-            </div>
-        </footer>
+<div class="app">
+<header class="app-header">
+  <h1>🫀 心臟循環生理動態模擬（進階：體循環 + 肺循環） <span class="tag">國中生物</span></h1>
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="modeTeach">📽 教師講解</button>
+    <button class="mode-btn" id="modeSelf">📖 自學探索</button>
+  </div>
+</header>
+<div class="controls">
+  <button class="btn primary" id="btnPlay">⏸ 暫停</button>
+  <button class="btn" id="btnStep">→ 跳至下一教學點</button>
+  <button class="btn" id="btnReset">↺ 重置</button>
+  <div class="speed-wrap">
+    <span>速率</span>
+    <input type="range" id="speedSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+    <span id="speedVal">1.0×</span>
+  </div>
+  <div class="focus-wrap">
+    <button class="fbtn active" data-f="all">全程</button>
+    <button class="fbtn" data-f="sys">體循環</button>
+    <button class="fbtn" data-f="pul">肺循環</button>
+  </div>
+</div>
+<div class="main">
+  <div class="left-panel">
+    <div class="info-block">
+      <h2><span class="dot-icon" style="background:var(--accent)"></span> 心動週期步驟</h2>
+      <div class="step-timeline">
+        <div class="step-node" data-step="1"><div class="step-num">1</div><div class="step-label">心房收縮（血液入室）</div></div>
+        <div class="step-node" data-step="2"><div class="step-num">2</div><div class="step-label">心室收縮（房室瓣閉）</div></div>
+        <div class="step-node" data-step="3"><div class="step-num">3</div><div class="step-label">射血期（進入動脈）</div></div>
+        <div class="step-node" data-step="4"><div class="step-num">4</div><div class="step-label">心室舒張（半月瓣閉）</div></div>
+        <div class="step-node" data-step="5"><div class="step-num">5</div><div class="step-label">充血準備（房室瓣開）</div></div>
+      </div>
     </div>
-
-    <script src="script.js"></script>
+    <div class="info-block">
+      <h2><span class="dot-icon" style="background:var(--green)"></span> 核心考點</h2>
+      <div class="concept-card"><strong>胎兒卵圓孔</strong><br>胎兒肺部未充氣，右心房血液透過卵圓孔直接流入左心房，繞過肺循環。出生後卵圓孔關閉。</div>
+      <div class="concept-card"><strong>心輸出量公式</strong><br>心輸出量 = 每搏輸出量 × 心率<br>運動時兩者皆增加，可達休息時的5倍。</div>
+      <div class="concept-card"><strong>等容收縮期</strong><br>兩組瓣膜同時關閉（房室瓣+半月瓣），心室容積暫時不變，是大考高頻考點。</div>
+    </div>
+  </div>
+  <div class="canvas-area">
+    <canvas id="heartFlowCanvas"></canvas>
+    <div class="step-overlay hidden" id="stepOverlay"></div>
+  </div>
+  <div class="right-panel">
+    <div class="rp-block">
+      <h2><span class="dot-icon" style="background:var(--accent)"></span> 目前生理動態說明</h2>
+      <div class="status-title" id="statusTitle">正常安靜狀態</div>
+      <div class="status-desc" id="statusDesc">正常安靜狀態：人體心臟由強韌的心肌構成。當心室收縮時，房室瓣會立即關閉以防血液倒流，充氧血從左心室強力泵入主動脈，開啟體循環。</div>
+    </div>
+    <div class="rp-block">
+      <h2><span class="dot-icon" style="background:var(--yellow)"></span> 大考必考提示</h2>
+      <div class="exam-tip"><strong>📌 本階段考點</strong><span id="examTip">體循環與肺循環同時進行，左右心臟分工合作，互不相通。</span></div>
+    </div>
+    <div class="quiz-block">
+      <h2>
+        <span style="display:flex;align-items:center;gap:6px"><span class="dot-icon" style="background:var(--accent)"></span> 隨堂測驗</span>
+        <span class="quiz-progress" id="quizProgress">1 / 10</span>
+      </h2>
+      <div class="quiz-q" id="quiz-q">載入中...</div>
+      <div class="quiz-opts" id="quiz-opts"></div>
+      <div id="quiz-feedback" class="quiz-feedback"></div>
+      <button id="btn-next-quiz" class="btn btn-next">下一題 →</button>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="legend-row">
+    <span style="font-size:11px;color:var(--muted);margin-right:2px">圖例：</span>
+    <div class="legend-item"><div class="ldot" style="background:var(--oxy)"></div>充氧血（動脈血）</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--deoxy)"></div>缺氧血（靜脈血）</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--valve-open);box-shadow:0 0 4px var(--valve-open)"></div>瓣膜開啟</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--valve-closed)"></div>瓣膜關閉</div>
+  </div>
+  <div class="ecg-wrap">
+    <span class="ecg-lbl">ECG 心電圖：</span>
+    <canvas id="ecgCanvas"></canvas>
+  </div>
+</div>
+</div>
+<script src="script.js"></script>
 </body>
-
 </html>

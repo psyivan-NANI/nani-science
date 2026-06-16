@@ -5,8 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>國中生物互動教室：光合作用全解碼</title>
     <link rel="stylesheet" href="styles.css">
+
+<style id="teach-framework">
+.teach-header{background:#111827;border-bottom:1px solid #1f2d45;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.teach-header h1{font-size:14px;font-weight:600;color:#f1f5f9;display:flex;align-items:center;gap:6px;margin:0}
+.th-badge{font-size:10px;background:rgba(29,158,117,.18);color:#1d9e75;border:1px solid rgba(29,158,117,.3);border-radius:4px;padding:2px 7px;flex-shrink:0}
+.mode-toggle-t{display:flex;background:#0a0f1e;border:1px solid #1f2d45;border-radius:6px;overflow:hidden}
+.mode-btn-t{padding:4px 11px;font-size:11px;border:none;background:transparent;color:#94a3b8;cursor:pointer;transition:all .2s}
+.mode-btn-t.active{background:#38bdf8;color:#0a0f1e;font-weight:600}
+.teach-bar{background:#0f172a;border-bottom:1px solid #1f2d45;padding:7px 14px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.tb-btn{padding:5px 12px;border-radius:6px;border:1px solid #1f2d45;background:transparent;color:#f1f5f9;font-size:12px;cursor:pointer;transition:all .15s}
+.tb-btn:hover{border-color:#38bdf8;color:#38bdf8}
+.tb-btn.on{background:#38bdf8;color:#0a0f1e;border-color:#38bdf8;font-weight:600}
+.tb-speed{display:flex;align-items:center;gap:6px;font-size:11px;color:#94a3b8}
+.tb-speed input{width:70px;accent-color:#38bdf8}
+.teach-overlay{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.95);border:1px solid #38bdf8;border-radius:10px;padding:11px 20px;font-size:13px;text-align:center;min-width:280px;max-width:440px;line-height:1.65;z-index:9999;transition:opacity .3s;color:#f1f5f9}
+.teach-overlay strong{color:#38bdf8}
+.teach-overlay.hidden{opacity:0;pointer-events:none}
+.upgrade-quiz{background:#111827;border-top:1px solid #1f2d45;padding:14px 16px}
+.uq-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.uq-head h2{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#38bdf8}
+.uq-prog{font-size:11px;color:#94a3b8}
+.uq-q{font-size:12px;color:#f1f5f9;line-height:1.7;margin-bottom:11px;padding:10px 12px;background:#0a0f1e;border:1px solid #1f2d45;border-radius:8px}
+.uq-opts{display:flex;flex-direction:column;gap:6px}
+.uq-opt{text-align:left;padding:8px 12px;border-radius:7px;border:1px solid #1f2d45;background:transparent;color:#94a3b8;font-size:12px;cursor:pointer;transition:all .15s;line-height:1.5;font-family:inherit;width:100%}
+.uq-opt:hover:not(:disabled){border-color:#38bdf8;color:#f1f5f9;background:rgba(56,189,248,.06)}
+.uq-opt.correct{border-color:#10b981!important;background:rgba(16,185,129,.12)!important;color:#10b981!important}
+.uq-opt.wrong{border-color:#e53e3e!important;background:rgba(229,62,62,.1)!important;color:#e53e3e!important}
+.uq-opt:disabled{cursor:default}
+.uq-fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.65;display:none}
+.uq-fb.correct{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#94a3b8}
+.uq-fb.correct strong{color:#10b981}
+.uq-fb.wrong{background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.25);color:#94a3b8}
+.uq-fb.wrong strong{color:#e53e3e}
+.uq-next{margin-top:10px;width:100%;display:none;padding:7px;border-radius:7px;border:1px solid #1f2d45;background:transparent;color:#f1f5f9;font-size:12px;cursor:pointer;transition:all .15s}
+.uq-next:hover{border-color:#38bdf8;color:#38bdf8}
+</style>
+
 </head>
 <body>
+
+<div class="teach-header">
+  <h1>🍃 植物光合作用機制演繹 <span class="th-badge">國中生物</span></h1>
+  <div class="mode-toggle-t">
+    <button class="mode-btn-t active" id="tm-teach">📽 教師講解</button>
+    <button class="mode-btn-t" id="tm-self">📖 自學探索</button>
+  </div>
+</div>
+<div class="teach-bar">
+  <button class="tb-btn on" id="tb-play">⏸ 暫停</button>
+  <button class="tb-btn" id="tb-step">→ 下一教學點</button>
+  <button class="tb-btn" id="tb-reset">↺ 重置</button>
+  <div class="tb-speed">
+    <span>速率</span>
+    <input type="range" id="tb-speed" min="0.3" max="2.5" step="0.1" value="1.0">
+    <span id="tb-speedval">1.0×</span>
+  </div>
+</div>
+<div class="teach-overlay hidden" id="teach-overlay"></div>
+
     <div class="app-container">
         <header class="control-panel">
             <div class="panel-group">
@@ -48,7 +105,7 @@
                 <section class="info-card">
                     <h2><span class="dot yellow"></span> 會考重點整理</h2>
                     <ul>
-                        <li><strong>光反應：</strong>發生在葉綠餅，吸收光能將水分解產生<strong>氧氣</strong>並產生能量。</li>
+                        <li><strong>光反應：</strong>發生在類囊體（葉綠餅），吸收光能將水分解，產生<strong>氧氣</strong>與能量（ATP/NADPH）。</li>
                         <li><strong>碳反應：</strong>發生在基質，利用光反應提供的能量將<strong>二氧化碳</strong>轉換為葡萄糖與水。</li>
                         <li><strong>實驗檢驗：</strong>澱粉遇碘液呈<strong>藍黑色</strong>。檢驗前需先在熱水中漂洗，並在酒精中隔水加熱脫去葉綠素。</li>
                     </ul>
@@ -67,5 +124,150 @@
         </main>
     </div>
     <script src="script.js"></script>
+
+<div class="upgrade-quiz">
+  <div class="uq-head">
+    <h2>📝 隨堂測驗</h2>
+    <span class="uq-prog" id="uq-prog">1 / 10</span>
+  </div>
+  <div class="uq-q" id="uq-q">載入中...</div>
+  <div class="uq-opts" id="uq-opts"></div>
+  <div class="uq-fb" id="uq-fb"></div>
+  <button class="uq-next" id="uq-next">下一題 →</button>
+</div>
+
+<script>
+(function(){
+  // 通用教學框架：整合播放控制、步驟提示、速率
+  var isTeachMode = true;
+  var overlay = document.getElementById('teach-overlay');
+
+  // 播放/暫停 — 相容多種模組的全域變數
+  document.getElementById('tb-play').onclick = function(){
+    var btn = this;
+    // 嘗試切換各種模組的播放狀態
+    if(typeof window.isPlaying !== 'undefined'){
+      window.isPlaying = !window.isPlaying;
+      btn.textContent = window.isPlaying ? '⏸ 暫停' : '▶ 播放';
+      btn.className = window.isPlaying ? 'tb-btn on' : 'tb-btn';
+    }
+    if(typeof window.state !== 'undefined' && window.state.isPaused !== undefined){
+      window.state.isPaused = !window.state.isPaused;
+      btn.textContent = window.state.isPaused ? '▶ 播放' : '⏸ 暫停';
+      btn.className = window.state.isPaused ? 'tb-btn' : 'tb-btn on';
+    }
+    // 相容 btn-pause
+    var orig = document.querySelector('#btn-pause, #btn-play-pause, #btnPlay');
+    if(orig && !orig.closest('.teach-bar') && !orig.closest('.upgrade-quiz')) orig.click();
+  };
+
+  // 速率控制
+  document.getElementById('tb-speed').oninput = function(){
+    var v = parseFloat(this.value);
+    document.getElementById('tb-speedval').textContent = v.toFixed(1)+'×';
+    if(typeof window.speed !== 'undefined') window.speed = v;
+    if(typeof window.state !== 'undefined' && window.state.speed !== undefined) window.state.speed = v;
+    // 同步原版速率 slider
+    ['slider-rate','slider-bpm','speedSlider'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){ el.value = Math.round(40 + v*30); el.dispatchEvent(new Event('input')); }
+    });
+  };
+
+  // 重置
+  document.getElementById('tb-reset').onclick = function(){
+    if(typeof window.phase !== 'undefined') window.phase = 0;
+    if(typeof window.shownSteps !== 'undefined') window.shownSteps.clear();
+    overlay.classList.add('hidden');
+    var orig = document.querySelector('#btn-reset, #btnReset');
+    if(orig && !orig.closest('.teach-bar') && !orig.closest('.upgrade-quiz')) orig.click();
+  };
+
+  // 跳至下一教學點
+  document.getElementById('tb-step').onclick = function(){
+    if(typeof window.TEACH_STEPS !== 'undefined' && typeof window.phase !== 'undefined'){
+      var next = window.TEACH_STEPS.find(function(s){ return s.p > window.phase+0.008; });
+      if(next){ window.phase = next.p - 0.004; }
+      else { window.phase = 0; if(window.shownSteps) window.shownSteps.clear(); }
+    }
+    if(typeof window.isPlaying !== 'undefined') window.isPlaying = true;
+    document.getElementById('tb-play').textContent = '⏸ 暫停';
+    document.getElementById('tb-play').className = 'tb-btn on';
+  };
+
+  // 教師/自學切換
+  document.getElementById('tm-teach').onclick = function(){
+    isTeachMode = true;
+    if(typeof window.teachMode !== 'undefined') window.teachMode = true;
+    if(typeof window.shownSteps !== 'undefined') window.shownSteps.clear();
+    this.classList.add('active');
+    document.getElementById('tm-self').classList.remove('active');
+    document.getElementById('tb-step').style.display = '';
+  };
+  document.getElementById('tm-self').onclick = function(){
+    isTeachMode = false;
+    if(typeof window.teachMode !== 'undefined') window.teachMode = false;
+    this.classList.add('active');
+    document.getElementById('tm-teach').classList.remove('active');
+    overlay.classList.add('hidden');
+    document.getElementById('tb-step').style.display = 'none';
+  };
+
+  // 升級版題庫系統
+  var uqData = (typeof quizData !== 'undefined') ? quizData : [];
+  var uqIdx = 0;
+
+  function uqRender(){
+    if(!uqData.length){ document.getElementById('uq-q').textContent='（本模組無題目）'; return; }
+    var q = uqData[uqIdx];
+    document.getElementById('uq-q').textContent = q.q || q.question || '';
+    document.getElementById('uq-prog').textContent = (uqIdx+1)+' / '+uqData.length;
+    var optsEl = document.getElementById('uq-opts'); optsEl.innerHTML='';
+    var keys = ['A','B','C','D'];
+    var opts = q.opts || q.options || [];
+    opts.forEach(function(opt,i){
+      var btn = document.createElement('button');
+      btn.className='uq-opt'; btn.textContent=opt;
+      btn.onclick = function(){ uqCheck(keys[i]); };
+      optsEl.appendChild(btn);
+    });
+    var fb=document.getElementById('uq-fb'); fb.style.display='none'; fb.className='uq-fb';
+    document.getElementById('uq-next').style.display='none';
+  }
+
+  function uqCheck(userKey){
+    var q = uqData[uqIdx];
+    var correctKey = q.a || q.answer || 'A';
+    var btns = document.querySelectorAll('.uq-opt');
+    btns.forEach(function(b){ b.disabled=true; });
+    var keys=['A','B','C','D'];
+    var ui=keys.indexOf(userKey), ci=keys.indexOf(correctKey);
+    if(ui>=0) btns[ui].classList.add(userKey===correctKey?'correct':'wrong');
+    if(userKey!==correctKey && ci>=0) btns[ci].classList.add('correct');
+    var fb=document.getElementById('uq-fb'); fb.style.display='block';
+    var r = q.r || q.explanation || '';
+    if(userKey===correctKey){
+      fb.className='uq-fb correct';
+      fb.innerHTML='<strong>🟢 回答正確！</strong><br>'+r;
+    } else {
+      fb.className='uq-fb wrong';
+      fb.innerHTML='<strong>🔴 答錯了（正確答案是 '+correctKey+'）</strong><br>'+r;
+    }
+    document.getElementById('uq-next').style.display='block';
+  }
+
+  document.getElementById('uq-next').onclick = function(){
+    uqIdx = (uqIdx+1) % Math.max(uqData.length,1);
+    uqRender();
+  };
+
+  // 等 quizData 從 script.js 載入後初始化
+  window.addEventListener('load', function(){
+    uqData = (typeof quizData !== 'undefined') ? quizData : [];
+    uqRender();
+  });
+})();
+</script>
+
 </body>
 </html>
