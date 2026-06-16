@@ -168,5 +168,82 @@ html,body{height:100%;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengH
 </div>
 </div>
 <script src="script.js"></script>
+<script>
+(function(){
+  var overlay = document.getElementById('teach-overlay');
+
+  document.getElementById('tb-play').onclick = function(){
+    var btn = this;
+    if(typeof window.isPlaying !== 'undefined'){
+      window.isPlaying = !window.isPlaying;
+      btn.textContent = window.isPlaying ? '⏸ 暫停' : '▶ 播放';
+      btn.className   = window.isPlaying ? 'tb-btn on' : 'tb-btn';
+    }
+    if(typeof window.state !== 'undefined' && window.state.isPaused !== undefined){
+      window.state.isPaused = !window.state.isPaused;
+      btn.textContent = window.state.isPaused ? '▶ 播放' : '⏸ 暫停';
+      btn.className   = window.state.isPaused ? 'tb-btn' : 'tb-btn on';
+    }
+    var orig = document.querySelector('#btn-pause, #btn-play-pause, #btnPlay');
+    if(orig && !orig.closest('.teach-bar')) orig.click();
+  };
+
+  document.getElementById('tb-speed').oninput = function(){
+    var v = parseFloat(this.value);
+    document.getElementById('tb-speedval').textContent = v.toFixed(1)+'×';
+    if(typeof window.speed !== 'undefined') window.speed = v;
+    if(typeof window.state !== 'undefined' && window.state.speed !== undefined) window.state.speed = v;
+    if(typeof window.heartRateBpm !== 'undefined') window.heartRateBpm = Math.round(40+v*30);
+  };
+
+  document.getElementById('tb-reset').onclick = function(){
+    if(typeof window.phase !== 'undefined') window.phase = 0;
+    if(typeof window.shownSteps !== 'undefined' && window.shownSteps.clear) window.shownSteps.clear();
+    if(overlay) overlay.classList.add('hidden');
+    var orig = document.querySelector('#btn-reset, #btnReset');
+    if(orig && !orig.closest('.teach-bar')) orig.click();
+  };
+
+  document.getElementById('tb-step').onclick = function(){
+    if(typeof window.TEACH_STEPS !== 'undefined' && typeof window.phase !== 'undefined'){
+      var next = window.TEACH_STEPS.find(function(s){ return s.p > window.phase+0.008; });
+      if(next) window.phase = next.p - 0.004;
+      else { window.phase = 0; if(window.shownSteps && window.shownSteps.clear) window.shownSteps.clear(); }
+    }
+    if(typeof window.isPlaying !== 'undefined') window.isPlaying = true;
+    var pb = document.getElementById('tb-play');
+    pb.textContent = '⏸ 暫停'; pb.className = 'tb-btn on';
+  };
+
+  document.getElementById('tm-teach').onclick = function(){
+    if(typeof window.teachMode !== 'undefined') window.teachMode = true;
+    if(typeof window.shownSteps !== 'undefined' && window.shownSteps.clear) window.shownSteps.clear();
+    this.classList.add('active');
+    document.getElementById('tm-self').classList.remove('active');
+  };
+  document.getElementById('tm-self').onclick = function(){
+    if(typeof window.teachMode !== 'undefined') window.teachMode = false;
+    this.classList.add('active');
+    document.getElementById('tm-teach').classList.remove('active');
+    if(overlay) overlay.classList.add('hidden');
+  };
+
+  // heart-loop 系列有自己的題庫，不需要框架題庫
+  setTimeout(function(){
+    var uqBlock = document.getElementById('upgrade-quiz-block');
+    if(uqBlock) uqBlock.style.display = 'none';
+  }, 100);
+})();
+</script>
+<script>
+(function(){
+  // heart-loop 系列完全自管，無需框架橋接
+  // 只確保 upgrade-quiz-block 隱藏（如果存在）
+  setTimeout(function(){
+    var uqBlock = document.getElementById('upgrade-quiz-block');
+    if(uqBlock) uqBlock.style.display = 'none';
+  }, 100);
+})();
+</script>
 </body>
 </html>
